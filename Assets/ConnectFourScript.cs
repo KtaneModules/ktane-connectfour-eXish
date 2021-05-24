@@ -301,7 +301,7 @@ public class ConnectFourScript : MonoBehaviour {
 
     //twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} place in <#> [Places a chip in column '#']";
+    private readonly string TwitchHelpMessage = @"!{0} column/col <#> [Places a chip in column '#']";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -312,57 +312,39 @@ public class ConnectFourScript : MonoBehaviour {
             yield break;
         }
         string[] parameters = command.Split(' ');
-        if (Regex.IsMatch(parameters[0], @"^\s*place\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        if (Regex.IsMatch(parameters[0], @"^\s*column\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*col\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
             yield return null;
-            if (parameters.Length > 3)
+            if (parameters.Length > 2)
             {
                 yield return "sendtochaterror Too many parameters!";
             }
-            else if (parameters.Length == 3)
+            else if (parameters.Length == 2)
             {
-                if (parameters[1].EqualsIgnoreCase("in"))
+                int temp;
+                if (int.TryParse(parameters[1], out temp))
                 {
-                    int temp;
-                    if (int.TryParse(parameters[2], out temp))
+                    if (temp >= 0 && temp <= 6)
                     {
-                        if (temp >= 0 && temp <= 6)
+                        buttons[temp].OnInteract();
+                        if (neededMoves.Last() == temp && stage == (neededMoves.Count - 1))
                         {
-                            buttons[temp].OnInteract();
-                            if (neededMoves.Last() == temp && stage == (neededMoves.Count - 1))
-                            {
-                                yield return "solve";
-                            }
-                        }
-                        else
-                        {
-                            yield return "sendtochaterror!f The specified column '" + parameters[2] + "' is out of range 0-6!";
+                            yield return "solve";
                         }
                     }
                     else
                     {
-                        yield return "sendtochaterror!f The specified column '" + parameters[2] + "' is invalid!";
+                        yield return "sendtochaterror!f The specified column '" + parameters[1] + "' is out of range 0-6!";
                     }
                 }
                 else
                 {
-                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'in'!";
-                }
-            }
-            else if (parameters.Length == 2)
-            {
-                if (parameters[1].EqualsIgnoreCase("in"))
-                {
-                    yield return "sendtochaterror Please specify a column to place a chip in!";
-                }
-                else
-                {
-                    yield return "sendtochaterror!f The specified parameter '" + parameters[1] + "' is invalid! Expected 'in'!";
+                    yield return "sendtochaterror!f The specified column '" + parameters[1] + "' is invalid!";
                 }
             }
             else if (parameters.Length == 1)
             {
-                yield return "sendtochaterror Please specify the word 'in' and a column to place a chip in!";
+                yield return "sendtochaterror Please specify a column to place a chip in!";
             }
             yield break;
         }
