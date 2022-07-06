@@ -16,8 +16,8 @@ MonoBehaviour:
   author: Blananas2, eXish
   description: "Keep placing chips in the correct column until you get a connect four.\n\nHTML:
     https://ktane.timwi.de/HTML/Connect%20Four.html\nPDF: https://ktane.timwi.de/PDF/Connect%20Four.pdf\n\nConnect
-    Four (connectFourModule) v1.0.1\nModule Idea by Blananas2\r\nImplemented by eXish\nTwitch
+    Four (connectFourModule) v1.0.2\nModule Idea by Blananas2\r\nImplemented by eXish\nTwitch
     Plays supported"
-  version: 1.0.1
+  version: 1.0.2
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 08058b5dc48fc1e4fb53111579cfe059, type: 3}
